@@ -1,3 +1,21 @@
-// 1.21.1	2025-05-09T08:43:20.5198288	Recipes
-81267456f849b746b73d587cf982c3f2ae127162 data/minecraft/advancement/recipes/building_blocks/dn_recipe.json
-39a242b9f088f732e893b5bf5464d55f648efbe1 data/minecraft/recipe/dn_recipe.json
+// 1.21.1	2026-11-18T21:19:50.0721804	Recipes
+ec8bc5eaf4ffda40c24e68f3f886ef3c8f11fdaf data/minecraft/advancement/recipes/tools/print_recraft_1.json
+e6ca6146d3f8717219ab495f76ef6c72f2d553d1 data/minecraft/advancement/recipes/tools/print_recraft_2.json
+9925b872d4d82480e56596b941baaf541f337388 data/minecraft/advancement/recipes/tools/print_recraft_3.json
+63e5877e6681ea820c3003f21791ae5fb5370b23 data/minecraft/advancement/recipes/tools/print_recraft_4.json
+a14de140d91cae794e3d6376019468b5570c5361 data/minecraft/advancement/recipes/tools/print_recraft_5.json
+ff338e5f08bd282351184461beae2519d2f3c8e7 data/minecraft/recipe/print_recraft_1.json
+c9b905d9286b91722c27ccef3abb8c5331644045 data/minecraft/recipe/print_recraft_2.json
+b9740e15dfc038595c899a880c66f49deb6bd00f data/minecraft/recipe/print_recraft_3.json
+6fdce96ec4d137f4048f980c14703255cf05cd81 data/minecraft/recipe/print_recraft_4.json
+a1b6c2095eccbf9461c459aa79029fed26b715d8 data/minecraft/recipe/print_recraft_5.json
+ef764fd0e72ea540a8406a6b5f50f240e7a23092 data/pp/advancement/recipes/tools/pattern_print_1.json
+4b5159023590bed3ca37b159526b47852ce1ad51 data/pp/advancement/recipes/tools/pattern_print_2.json
+6b2300ae59547a3e08fbdf5f5ef8488d3e920b24 data/pp/advancement/recipes/tools/pattern_print_3.json
+5ffa9f463a890dbc9706a64e5127511c32d7b39d data/pp/advancement/recipes/tools/pattern_print_4.json
+9b577afadfb1e993c7611f72c1a0ee898b669c4f data/pp/advancement/recipes/tools/pattern_print_5.json
+e2053b84caa2991c685602ab0b2a28fcb9e7cd4c data/pp/recipe/pattern_print_1.json
+b56c9b27691a229b5f8a40ff3aed2b93b0ad25d9 data/pp/recipe/pattern_print_2.json
+c5a0ad49a52169351ea71d2bca0c17b48ecbf384 data/pp/recipe/pattern_print_3.json
+1cbcdfa6b487408706a9f9f48315c03216147b3a data/pp/recipe/pattern_print_4.json
+b795c73691b960204cd8d8e3744ffb9ec0ddfc48 data/pp/recipe/pattern_print_5.json
