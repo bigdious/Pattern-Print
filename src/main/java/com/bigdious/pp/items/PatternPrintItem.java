@@ -1,6 +1,8 @@
 package com.bigdious.pp.items;
 
+import com.bigdious.pp.config.PPConfig;
 import com.bigdious.pp.init.PPDataComponents;
+import com.bigdious.pp.init.PPMobEffects;
 import com.bigdious.pp.init.PPSoundEvents;
 import com.bigdious.pp.init.PPTags;
 import net.minecraft.ChatFormatting;
@@ -14,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.neoforged.fml.ModList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +132,7 @@ public class PatternPrintItem extends Item {
 
 					if (level.getBlockState(finalPos).canBeReplaced() &&
 						canPlace(new BlockPlaceContext(context), placementState, finalPos) &&
-						(player.getInventory().hasAnyMatching(itemStack -> itemStack.is(patternBlock.asItem())) || player.isCreative())) {
+						((player.getInventory().hasAnyMatching(itemStack -> itemStack.is(patternBlock.asItem())) && player.getInventory().findSlotMatchingItem(patternBlock.asItem().getDefaultInstance()) >= 0 )  || player.isCreative())) {
 						level.setBlock(finalPos, placementState == null ? patternBlock.defaultBlockState() : placementState, 11);
 						level.gameEvent(player, GameEvent.BLOCK_PLACE, blockpos);
 						player.awardStat(Stats.ITEM_USED.get(patternBlock.asItem()));
@@ -142,6 +146,9 @@ public class PatternPrintItem extends Item {
 					level.playSound(player, player.getOnPos().above(), PPSoundEvents.PP_FAILED.get(), SoundSource.PLAYERS, 1.8F, 1.8F);
 				} else {
 					level.playSound(player, blockpos, patternBlock.getSoundType(patternBlock.defaultBlockState(), level, blockpos, null).getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1);
+					if (PPConfig.combatNerf) {
+						player.addEffect(new MobEffectInstance(PPMobEffects.BUILDERS_FRAZZLE, 200, 0, true, false, true));
+					}
 				}
 				player.awardStat(Stats.ITEM_USED.get(this));
 				return InteractionResult.sidedSuccess(level.isClientSide());

@@ -34,7 +34,7 @@ version = mod_version
 group = mod_group_id
 
 base {
-	archivesName = 'DisplayNotches-' + project.minecraft_version
+	archivesName = 'PatternPrint-' + project.minecraft_version
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)

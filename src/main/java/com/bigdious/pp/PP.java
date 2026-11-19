@@ -2,9 +2,11 @@ package com.bigdious.pp;
 
 import com.bigdious.pp.client.PPClientEvents;
 import com.bigdious.pp.config.ConfigSetup;
-import com.bigdious.pp.data.*;
+import com.bigdious.pp.data.PPCraftingGenerator;
+import com.bigdious.pp.data.PPLangGenerator;
+import com.bigdious.pp.data.PPRegistryDataGenerator;
+import com.bigdious.pp.data.PPSoundDefinitions;
 import com.bigdious.pp.init.*;
-import com.bigdious.pp.network.SyncCommonConfigPacket;
 import com.google.common.reflect.Reflection;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -15,12 +17,9 @@ import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,14 +36,15 @@ public class PP {
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
 		bus.addListener(ConfigSetup::loadConfigs);
 		bus.addListener(ConfigSetup::reloadConfigs);
-		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncConfigOnLogin);
-		bus.addListener(this::registerPacket);
+
 		bus.addListener(PPTab::addToTabs);
 		PPSoundEvents.SOUNDS.register(bus);
 		PPDataComponents.COMPONENTS.register(bus);
 		PPMobEffects.MOB_EFFECTS.register(bus);
 
-
+		Reflection.initialize(ConfigSetup.class);
+		bus.addListener(ConfigSetup::loadConfigs);
+		bus.addListener(ConfigSetup::reloadConfigs);
 
 		PPItems.ITEMS.register(bus);
 
@@ -59,9 +59,11 @@ public class PP {
 		DataGenerator generator = event.getGenerator();
 		PackOutput packOutput = generator.getPackOutput();
 		DatapackBuiltinEntriesProvider datapackProvider = new PPRegistryDataGenerator(packOutput, event.getLookupProvider());
+		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
 		boolean isClient = event.includeClient();
 		generator.addProvider(isClient, new PPLangGenerator(packOutput));
+		generator.addProvider(isClient, new PPSoundDefinitions(packOutput, existingFileHelper));
 
 		boolean isServer = event.includeServer();
 
@@ -70,10 +72,6 @@ public class PP {
 		generator.addProvider(isServer, new PPCraftingGenerator(packOutput, lookupProvider));
 	}
 
-	public void registerPacket(RegisterPayloadHandlersEvent event) {
-//		PayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0");
-//		registrar.playToClient(SyncCommonConfigPacket.TYPE, SyncCommonConfigPacket.STREAM_CODEC, SyncCommonConfigPacket::handle);
-	}
 	public static ResourceLocation prefix(String name) {
 		return ResourceLocation.fromNamespaceAndPath(MODID, name.toLowerCase(Locale.ROOT));
 	}

@@ -1,10 +1,11 @@
 package com.bigdious.pp.config;
 
 public final class ConfigComments {
-	public static final String SPINNING_SOURCE = """
-		This setting determines what will cause the Display Notches to automatically rotate. The following values are available:
-		SIGNAL: A redstone signal will trigger it.
-		TORCH_ITEM: Right-clicking with a Redstone Torch will trigger it.""";
+	public static final String COMBAT_NERF = """
+		default false
+		When true, using a Pattern Print gives the Builder's Frazzle debuff which severely nerfs damage and armor for 10 seconds.
+		If the Risus mod is installed, combat nerf is default true.
+		""";
 
 
 

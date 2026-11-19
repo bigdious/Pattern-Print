@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
@@ -41,25 +42,28 @@ public class PatternPrintItemRenderer extends BlockEntityWithoutLevelRenderer {
 		Block block = stack.getOrDefault(PPDataComponents.BLOCK_STATE, Blocks.AIR.defaultBlockState()).getBlock();
 		poseStack.pushPose();
 		poseStack.popPose();
+		BlockState blockState = block.defaultBlockState();
+		BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
 		if (displayContext == ItemDisplayContext.GUI) {
-			poseStack.translate(-0.26, -0.23, 0);
-			poseStack.scale(0.45f, 0.45f, 0.45f);
-			poseStack.rotateAround(Axis.XP.rotationDegrees(30), 0.5f, 0.5f, 0.5f);
-			poseStack.rotateAround(Axis.YP.rotationDegrees(45), 0.5f, 0.5f, 0.5f);
+			poseStack.translate(-0.03, 0, 0.2);
+			poseStack.scale(0.7f, 0.7f, 0.7f);
+			renderer.renderStatic(null, block.asItem().getDefaultInstance(), displayContext, isLeftHand(displayContext), poseStack, buffer,null,  packedLight, packedOverlay, 1);
 		} else if (displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND ){
 			poseStack.translate(-0.14, 0.05, 0.05);
 			poseStack.scale(0.25f, 0.25f, 0.25f);
+			blockRenderer.renderSingleBlock(blockState, poseStack, buffer, packedLight, packedOverlay, ModelData.EMPTY, null);
 		} else {
 			poseStack.translate(-0.13, 0.10, -0.06);
 			poseStack.scale(0.25f, 0.25f, 0.25f);
 			poseStack.rotateAround(Axis.XP.rotationDegrees(-30), 0.5f, 0.5f, 0.5f);
-			poseStack.rotateAround(Axis.YP.rotationDegrees(15), 0.5f, 0.5f, 0.5f);
+			poseStack.rotateAround(Axis.YP.rotationDegrees(block instanceof StairBlock ? 15 : 105), 0.5f, 0.5f, 0.5f);
+			blockRenderer.renderSingleBlock(blockState, poseStack, buffer, packedLight, packedOverlay, ModelData.EMPTY, null);
 		}
 
-		BlockState blockState = block.defaultBlockState();
-		BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
-		blockRenderer.renderSingleBlock(blockState, poseStack, buffer, packedLight, packedOverlay, ModelData.EMPTY, null);
+
+
+
 
 		poseStack.popPose();
 	}
