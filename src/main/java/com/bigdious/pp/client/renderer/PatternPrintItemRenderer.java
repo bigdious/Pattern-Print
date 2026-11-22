@@ -36,7 +36,10 @@ public class PatternPrintItemRenderer extends BlockEntityWithoutLevelRenderer {
 		ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
 		poseStack.pushPose();
 		poseStack.translate(0.5, 0.5, 0.5);
-		BakedModel model = renderer.getItemModelShaper().getModelManager().getModel(stack.has(PPDataComponents.BLOCK_STATE) ? emptyItemModelLocation : itemModelLocation);
+		BakedModel model = renderer.getItemModelShaper().getModelManager().getModel(
+			stack.has(PPDataComponents.BLOCK_STATE) &&
+				displayContext != ItemDisplayContext.GROUND &&
+				displayContext != ItemDisplayContext.FIXED ? emptyItemModelLocation : itemModelLocation);
 		renderer.render(stack, displayContext, isLeftHand(displayContext), poseStack, buffer, packedLight, packedOverlay, model);
 
 		Block block = stack.getOrDefault(PPDataComponents.BLOCK_STATE, Blocks.AIR.defaultBlockState()).getBlock();
@@ -46,18 +49,18 @@ public class PatternPrintItemRenderer extends BlockEntityWithoutLevelRenderer {
 		BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
 		if (displayContext == ItemDisplayContext.GUI) {
-			poseStack.translate(-0.03, 0, 0.2);
+			poseStack.translate(-0.03, 0, 0.3);
 			poseStack.scale(0.7f, 0.7f, 0.7f);
 			renderer.renderStatic(null, block.asItem().getDefaultInstance(), displayContext, isLeftHand(displayContext), poseStack, buffer,null,  packedLight, packedOverlay, 1);
-		} else if (displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND ){
+		} else if (displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND){
 			poseStack.translate(-0.14, 0.05, 0.05);
 			poseStack.scale(0.25f, 0.25f, 0.25f);
 			blockRenderer.renderSingleBlock(blockState, poseStack, buffer, packedLight, packedOverlay, ModelData.EMPTY, null);
-		} else {
-			poseStack.translate(-0.13, 0.10, -0.06);
+		} else if (displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
+			poseStack.translate(-0.13, 0.10, -0.03);
 			poseStack.scale(0.25f, 0.25f, 0.25f);
 			poseStack.rotateAround(Axis.XP.rotationDegrees(-30), 0.5f, 0.5f, 0.5f);
-			poseStack.rotateAround(Axis.YP.rotationDegrees(block instanceof StairBlock ? 15 : 105), 0.5f, 0.5f, 0.5f);
+			poseStack.rotateAround(Axis.YP.rotationDegrees(block instanceof StairBlock ? 15 : displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND ? -105 : 105), 0.5f, 0.5f, 0.5f);
 			blockRenderer.renderSingleBlock(blockState, poseStack, buffer, packedLight, packedOverlay, ModelData.EMPTY, null);
 		}
 

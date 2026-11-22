@@ -10,6 +10,7 @@
   "item.pp.pattern_print_4.with_block": "Pattern Print 9□ (%s)",
   "item.pp.pattern_print_5": "Pattern Print 11□",
   "item.pp.pattern_print_5.with_block": "Pattern Print 11□ (%s)",
+  "item.pp.pattern_print_material": "Latticed Board",
   "tooltip.pp.pattern_print": "Pattern saved with %s position(s)",
   "tooltip.pp.pattern_print.1": "1. Hold item to see selection range",
   "tooltip.pp.pattern_print.10": "10. Put item into crafting grid at any time to reset saved pattern and block type",

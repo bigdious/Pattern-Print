@@ -19,6 +19,7 @@ public class PPLangGenerator extends DNLangProvider {
 	protected void addTranslations() {
 		SUBTITLE_GENERATOR.forEach(this::add);
 
+		this.addItem(PPItems.PATTERN_PRINT_MATERIAL, "Latticed Board");
 		this.addItem(PPItems.PATTERN_PRINT_1, "Pattern Print 3□");
 		this.addItem(PPItems.PATTERN_PRINT_2, "Pattern Print 5□");
 		this.addItem(PPItems.PATTERN_PRINT_3, "Pattern Print 7□");

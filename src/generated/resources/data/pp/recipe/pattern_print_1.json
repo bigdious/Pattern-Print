@@ -1,19 +1,21 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "equipment",
-  "ingredients": [
-    {
-      "tag": "minecraft:logs"
-    },
-    {
-      "item": "minecraft:copper_block"
-    },
-    {
-      "item": "minecraft:ink_sac"
-    },
-    {
+  "key": {
+    "#": {
       "item": "minecraft:paper"
+    },
+    "/": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "item": "pp:pattern_print_material"
     }
+  },
+  "pattern": [
+    " /#",
+    "/B/",
+    " / "
   ],
   "result": {
     "count": 1,

@@ -17,6 +17,7 @@ public class PPItems {
 	}
 
 	public static final DeferredItem<Item> PATTERN_PRINT_1 = register("pattern_print_1", PatternPrintItem::new, () -> new Item.Properties().component(PPDataComponents.PATTERN_PRINT_COMPONENT, PatternPrintComponent.EMPTY).component(PPDataComponents.PRINT_RANGE, 1).stacksTo(1));
+	public static final DeferredItem<Item> PATTERN_PRINT_MATERIAL = register("pattern_print_material", Item::new, Item.Properties::new);
 	//this is ugly, but its smooth both for crafting and for the average player. Adding a new crafting type just for this is not worth the effort longterm
 	public static final DeferredItem<Item> PATTERN_PRINT_2 = register("pattern_print_2", PatternPrintItem::new, () -> new Item.Properties().component(PPDataComponents.PATTERN_PRINT_COMPONENT, PatternPrintComponent.EMPTY).component(PPDataComponents.PRINT_RANGE, 2).stacksTo(1));
 	public static final DeferredItem<Item> PATTERN_PRINT_3 = register("pattern_print_3", PatternPrintItem::new, () -> new Item.Properties().component(PPDataComponents.PATTERN_PRINT_COMPONENT, PatternPrintComponent.EMPTY).component(PPDataComponents.PRINT_RANGE, 3).stacksTo(1));

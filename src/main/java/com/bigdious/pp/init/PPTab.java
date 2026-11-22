@@ -14,6 +14,7 @@ public class PPTab {
 			event.insertAfter(new ItemStack(Items.WARPED_FUNGUS_ON_A_STICK), PPItems.PATTERN_PRINT_3.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.WARPED_FUNGUS_ON_A_STICK), PPItems.PATTERN_PRINT_2.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.WARPED_FUNGUS_ON_A_STICK), PPItems.PATTERN_PRINT_1.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.WARPED_FUNGUS_ON_A_STICK), PPItems.PATTERN_PRINT_MATERIAL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 		}
 	}
 }
