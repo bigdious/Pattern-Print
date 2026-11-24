@@ -38,7 +38,7 @@ public class PPSoundDefinitions extends SoundDefinitionsProvider {
 			.with(SoundDefinition.Sound.sound(referencedSound.getLocation(), SoundDefinition.SoundType.EVENT).volume(volume).pitch(pitch)));
 	}
 	private void createSubtitleAndLangEntry(DeferredHolder<SoundEvent, SoundEvent> event, SoundDefinition definition, String subtitle) {
-		String subtitleKey = "subtitles.risus." + event.getId().getPath();
+		String subtitleKey = "subtitles.pp." + event.getId().getPath();
 		definition.subtitle(subtitleKey);
 		PPLangGenerator.SUBTITLE_GENERATOR.put(subtitleKey, subtitle);
 	}

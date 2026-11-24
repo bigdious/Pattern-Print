@@ -6,7 +6,7 @@
         "name": "block.dispenser.fail"
       }
     ],
-    "subtitle": "subtitles.risus.item.pattern_print.denied"
+    "subtitle": "subtitles.pp.item.pattern_print.denied"
   },
   "item.pattern_print.fail": {
     "sounds": [
@@ -15,7 +15,7 @@
         "name": "block.dispenser.fail"
       }
     ],
-    "subtitle": "subtitles.risus.item.pattern_print.fail"
+    "subtitle": "subtitles.pp.item.pattern_print.fail"
   },
   "item.pattern_print.rotated": {
     "sounds": [
@@ -24,6 +24,6 @@
         "name": "item.book.page_turn"
       }
     ],
-    "subtitle": "subtitles.risus.item.pattern_print.rotated"
+    "subtitle": "subtitles.pp.item.pattern_print.rotated"
   }
 }

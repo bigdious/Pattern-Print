@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "pp:pattern_print_1"
+    },
+    {
+      "item": "pp:pattern_print_material"
+    },
+    {
+      "item": "pp:pattern_print_material"
+    },
+    {
+      "item": "pp:pattern_print_material"
+    },
+    {
+      "item": "pp:pattern_print_material"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "pp:pattern_print_5"
+  }
+}

@@ -17,7 +17,6 @@ public class PPLangGenerator extends DNLangProvider {
 	}
 	@Override
 	protected void addTranslations() {
-		SUBTITLE_GENERATOR.forEach(this::add);
 
 		this.addItem(PPItems.PATTERN_PRINT_MATERIAL, "Latticed Board");
 		this.addItem(PPItems.PATTERN_PRINT_1, "Pattern Print 3□");
@@ -48,5 +47,11 @@ public class PPLangGenerator extends DNLangProvider {
 		this.add("tooltip.pp.pattern_print.10", "10. Put item into crafting grid at any time to reset saved pattern and block type");
 
 		this.addEffect(PPMobEffects.BUILDERS_FRAZZLE, "Builder's Frazzle");
+		//I have no clue why the subtitle generator is broken
+		this.add("subtitles.pp.item.pattern_print.denied", "Block is copyrighted, cannot be printed");
+		this.add("subtitles.pp.item.pattern_print.fail", "Pattern Print has no blocks to use");
+		this.add("subtitles.pp.item.pattern_print.rotated", "Pattern rotated");
+
+		SUBTITLE_GENERATOR.forEach(this::add);
 	}
 }

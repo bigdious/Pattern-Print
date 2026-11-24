@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "tag": "c:stripped_logs"
+    },
+    {
+      "item": "minecraft:copper_grate"
+    },
+    {
+      "item": "minecraft:scaffolding"
+    },
+    {
+      "item": "minecraft:ink_sac"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "pp:pattern_print_material"
+  }
+}
