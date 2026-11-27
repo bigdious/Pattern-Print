@@ -36,14 +36,14 @@ public class PPLangGenerator extends DNLangProvider {
 		this.add("tooltip.pp.pattern_print.hidden", "[Hold Shift for Usages]");
 		this.add("tooltip.pp.pattern_print.start", "How to use:");
 		this.add("tooltip.pp.pattern_print.1", "1. Hold item to see selection range");
-		this.add("tooltip.pp.pattern_print.2", "2. Shift-rightclick a block to save it");
+		this.add("tooltip.pp.pattern_print.2", "2. Shift-right click a block to save it");
 		this.add("tooltip.pp.pattern_print.3", "3. If any other blocks of the same type are present within the selection, their relative position will also be saved");
 		this.add("tooltip.pp.pattern_print.4", "4. Once a pattern is saved, shift-rightclicking a different block will change block type but not pattern");
 		this.add("tooltip.pp.pattern_print.5", "5. Holding the item now shows how the pattern will be placed");
-		this.add("tooltip.pp.pattern_print.6", "6. Right click in air to rotate pattern clockwise");
-		this.add("tooltip.pp.pattern_print.7", "7. Right click on a block to place the pattern");
-		this.add("tooltip.pp.pattern_print.8", "8. Blocks will only be placed if they can be consumed from inventory and placement is not obstructed");
-		this.add("tooltip.pp.pattern_print.9", "9. Continue using the item however you wish");
+		this.add("tooltip.pp.pattern_print.6", "6. Right click in air (or press %s) to rotate pattern clockwise in Y axis");
+		this.add("tooltip.pp.pattern_print.7", "7. Right click in air (or press %s) while crouching to rotate pattern clockwise in viewed horizontal axis");
+		this.add("tooltip.pp.pattern_print.8", "8. Right click on a block to place the pattern");
+		this.add("tooltip.pp.pattern_print.9", "9. Blocks will only be placed if they can be consumed from inventory and placement is not obstructed");
 		this.add("tooltip.pp.pattern_print.10", "10. Put item into crafting grid at any time to reset saved pattern and block type");
 
 		this.addEffect(PPMobEffects.BUILDERS_FRAZZLE, "Builder's Frazzle");
@@ -51,6 +51,8 @@ public class PPLangGenerator extends DNLangProvider {
 		this.add("subtitles.pp.item.pattern_print.denied", "Block is copyrighted, cannot be printed");
 		this.add("subtitles.pp.item.pattern_print.fail", "Pattern Print has no blocks to use");
 		this.add("subtitles.pp.item.pattern_print.rotated", "Pattern rotated");
+
+		this.add("keybind.rotate_pattern_print", "Rotate Pattern Print Clockwise");
 
 		SUBTITLE_GENERATOR.forEach(this::add);
 	}

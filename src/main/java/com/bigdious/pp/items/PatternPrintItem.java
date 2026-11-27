@@ -43,22 +43,73 @@ public class PatternPrintItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		//this is pattern rotation logic
 		ItemStack stack = player.getItemInHand(hand);
+		return rotationLogic(stack, player, level) ?
+			InteractionResultHolder.sidedSuccess(stack, !level.isClientSide()) :
+			InteractionResultHolder.fail(stack);
+	}
+
+	public static boolean rotationLogic(ItemStack stack, Player player, Level level) {
 		if (stack.has(PPDataComponents.BLOCK_STATE) && stack.has(PPDataComponents.PATTERN_PRINT_COMPONENT)) {
 			PatternPrintComponent ppComponent = stack.get(PPDataComponents.PATTERN_PRINT_COMPONENT);
 			PatternPrintComponent.Mutable ppComponent$mutable = new PatternPrintComponent.Mutable(ppComponent);
 			List<BlockPos> rotatedlist = new ArrayList<>();
-			for (BlockPos pos : ppComponent.positions()) {
-				//we rotate based on positive/negative values of z and x (keeping in mind the 0 cases). Since coordinates are relative, this *should* always be correct
-				//throw a sun at big if not
-				if (Math.signum(pos.getX()) == Math.signum(pos.getZ())) {
-					BlockPos rotatedPos = new BlockPos(-pos.getZ(), pos.getY(), pos.getX());
-					rotatedlist.add(rotatedPos);
+			Direction dir = facingDirection(Mth.wrapDegrees(player.getViewYRot(1.0F)));
+			if (player.isShiftKeyDown()) {
+				for (BlockPos pos : ppComponent.positions()) {
+					BlockPos rotatedPos;
+					//rotations around X
+					if (dir.getAxis() == Direction.Axis.X) {
+						boolean clockwise = dir == Direction.EAST;
+						if (Math.signum(pos.getY()) == Math.signum(pos.getZ())) {
+							rotatedPos = new BlockPos(
+								pos.getX(),
+								clockwise ? -pos.getZ() : pos.getZ(),
+								clockwise ? pos.getY() : -pos.getY()
+							);
+							rotatedlist.add(rotatedPos);
+						} else {
+							rotatedPos = new BlockPos(
+								pos.getX(),
+								pos.getZ() == 0 ? 0 : clockwise ? -pos.getZ() : pos.getZ(),
+								pos.getY() == 0 ? 0 : clockwise ? pos.getY() : -pos.getY()
+							);
+							rotatedlist.add(rotatedPos);
+						}
+					} else {
+						//rotations around Z
+						boolean clockwise = dir == Direction.NORTH;
+						if (Math.signum(pos.getY()) == Math.signum(pos.getZ())) {
+							rotatedPos = new BlockPos(
+								clockwise ? pos.getY() : -pos.getY(),
+								clockwise ? -pos.getX() : pos.getX(),
+								pos.getZ()
+							);
+							rotatedlist.add(rotatedPos);
+						} else {
+							rotatedPos = new BlockPos(
+								pos.getY() == 0 ? 0 : clockwise ? pos.getY() : -pos.getY(),
+								pos.getX() == 0 ? 0 : clockwise ? -pos.getX() : pos.getX(),
+								pos.getZ()
+							);
+							rotatedlist.add(rotatedPos);
+						}
+					}
 				}
-				else {
-					BlockPos rotatedPos = new BlockPos(
-						pos.getZ() == 0 ? 0 : -pos.getZ(),
-						pos.getY(),
-						pos.getX()==0 ? 0 : pos.getX());
+			} else {
+				for (BlockPos pos : ppComponent.positions()) {
+					BlockPos rotatedPos;
+					//we rotate based on positive/negative values of z and x (keeping in mind the 0 cases). Since coordinates are relative, this *should* always be correct
+					//throw a sun at big if not
+
+					if (Math.signum(pos.getX()) == Math.signum(pos.getZ())) {
+						rotatedPos = new BlockPos(-pos.getZ(), pos.getY(), pos.getX());
+					} else {
+						rotatedPos = new BlockPos(
+							pos.getZ() == 0 ? 0 : -pos.getZ(),
+							pos.getY(),
+							pos.getX() == 0 ? 0 : pos.getX());
+
+					}
 					rotatedlist.add(rotatedPos);
 				}
 			}
@@ -66,9 +117,9 @@ public class PatternPrintItem extends Item {
 			ppComponent$mutable.addList(rotatedlist);
 			stack.set(PPDataComponents.PATTERN_PRINT_COMPONENT, ppComponent$mutable.toImmutable());
 			level.playSound(player, player.getOnPos().above(), PPSoundEvents.PP_ROTATED.get(), SoundSource.PLAYERS);
-			return InteractionResultHolder.sidedSuccess(stack, !level.isClientSide());
-		}
-		return InteractionResultHolder.fail(stack);
+			player.getInventory().setChanged();
+			return true;
+		} else return false;
 	}
 
 	@Override
@@ -190,8 +241,8 @@ public class PatternPrintItem extends Item {
 			tooltip.add(Component.translatable("tooltip.pp.pattern_print.3").withStyle(ChatFormatting.GRAY));
 			tooltip.add(Component.translatable("tooltip.pp.pattern_print.4").withStyle(ChatFormatting.GRAY));
 			tooltip.add(Component.translatable("tooltip.pp.pattern_print.5").withStyle(ChatFormatting.GRAY));
-			tooltip.add(Component.translatable("tooltip.pp.pattern_print.6").withStyle(ChatFormatting.GRAY));
-			tooltip.add(Component.translatable("tooltip.pp.pattern_print.7").withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("tooltip.pp.pattern_print.6", Component.keybind("keybind.rotate_pattern_print").withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.translatable("tooltip.pp.pattern_print.7", Component.keybind("keybind.rotate_pattern_print").withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
 			tooltip.add(Component.translatable("tooltip.pp.pattern_print.8").withStyle(ChatFormatting.GRAY));
 			tooltip.add(Component.translatable("tooltip.pp.pattern_print.9").withStyle(ChatFormatting.GRAY));
 			tooltip.add(Component.translatable("tooltip.pp.pattern_print.10").withStyle(ChatFormatting.GRAY));

@@ -7,6 +7,8 @@ import com.bigdious.pp.data.PPLangGenerator;
 import com.bigdious.pp.data.PPRegistryDataGenerator;
 import com.bigdious.pp.data.PPSoundDefinitions;
 import com.bigdious.pp.init.*;
+import com.bigdious.pp.network.RotatePPPacket;
+import com.bigdious.pp.network.RotatePPPacketClient;
 import com.google.common.reflect.Reflection;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -20,6 +22,8 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,6 +45,7 @@ public class PP {
 		PPSoundEvents.SOUNDS.register(bus);
 		PPDataComponents.COMPONENTS.register(bus);
 		PPMobEffects.MOB_EFFECTS.register(bus);
+		bus.addListener(this::registerPackets);
 
 		Reflection.initialize(ConfigSetup.class);
 		bus.addListener(ConfigSetup::loadConfigs);
@@ -70,6 +75,12 @@ public class PP {
 		PPRegistryDataGenerator registryDataGenerator = new PPRegistryDataGenerator(packOutput, datapackProvider.getRegistryProvider());
 		var lookupProvider = registryDataGenerator.getRegistryProvider();
 		generator.addProvider(isServer, new PPCraftingGenerator(packOutput, lookupProvider));
+	}
+
+	public void registerPackets(RegisterPayloadHandlersEvent event) {
+		PayloadRegistrar registrar = event.registrar(MODID).versioned("1.0.0").optional();
+		registrar.playToServer(RotatePPPacket.TYPE, RotatePPPacket.STREAM_CODEC,(payload, context) -> RotatePPPacket.handle(context));
+		registrar.playToClient(RotatePPPacketClient.TYPE, RotatePPPacketClient.STREAM_CODEC, RotatePPPacketClient::handle);
 	}
 
 	public static ResourceLocation prefix(String name) {

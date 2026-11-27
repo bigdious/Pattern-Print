@@ -5,7 +5,10 @@ import com.bigdious.pp.client.renderer.PatternPrintItemRenderer;
 import com.bigdious.pp.init.PPDataComponents;
 import com.bigdious.pp.init.PPItems;
 import com.bigdious.pp.items.PatternPrintItem;
+import com.bigdious.pp.network.RotatePPPacket;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -21,11 +24,16 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.lwjgl.glfw.GLFW;
 
 public class PPClientEvents {
 	public static final ModelResourceLocation PRINT_MODEL_1 =  ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(PP.MODID, "item/pattern_print_1_base"));
@@ -38,9 +46,17 @@ public class PPClientEvents {
 	public static final ModelResourceLocation PRINT_MODEL_3_EMPTY =  ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(PP.MODID, "item/pattern_print_3_empty"));
 	public static final ModelResourceLocation PRINT_MODEL_4_EMPTY =  ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(PP.MODID, "item/pattern_print_4_empty"));
 	public static final ModelResourceLocation PRINT_MODEL_5_EMPTY =  ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(PP.MODID, "item/pattern_print_5_empty"));
-
+	private static final KeyMapping ROTATE_PP_KEY = new KeyMapping(
+		"keybind.rotate_pattern_print",
+		KeyConflictContext.IN_GAME,
+		InputConstants.Type.KEYSYM,
+		GLFW.GLFW_KEY_R,
+		"key.categories.misc");
 
 	public static void initEvents(IEventBus bus) {
+		bus.addListener(RegisterKeyMappingsEvent.class, event -> {
+			event.register(ROTATE_PP_KEY);
+		});
 		NeoForge.EVENT_BUS.addListener(PPClientEvents::renderPatternPrintOutlines);
 		bus.addListener(RegisterClientExtensionsEvent.class, event -> event.registerItem(new IClientItemExtensions() {@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {return new PatternPrintItemRenderer(1, PRINT_MODEL_1, PRINT_MODEL_1_EMPTY);}}, PPItems.PATTERN_PRINT_1.get()));
 		bus.addListener(RegisterClientExtensionsEvent.class, event -> event.registerItem(new IClientItemExtensions() {@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {return new PatternPrintItemRenderer(2, PRINT_MODEL_2, PRINT_MODEL_2_EMPTY);}}, PPItems.PATTERN_PRINT_2.get()));
@@ -48,6 +64,7 @@ public class PPClientEvents {
 		bus.addListener(RegisterClientExtensionsEvent.class, event -> event.registerItem(new IClientItemExtensions() {@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {return new PatternPrintItemRenderer(4, PRINT_MODEL_4, PRINT_MODEL_4_EMPTY);}}, PPItems.PATTERN_PRINT_4.get()));
 		bus.addListener(RegisterClientExtensionsEvent.class, event -> event.registerItem(new IClientItemExtensions() {@Override public BlockEntityWithoutLevelRenderer getCustomRenderer() {return new PatternPrintItemRenderer(5, PRINT_MODEL_5, PRINT_MODEL_5_EMPTY);}}, PPItems.PATTERN_PRINT_5.get()));
 		bus.addListener(PPClientEvents::registerModels);
+		NeoForge.EVENT_BUS.addListener(PPClientEvents::rotatePP);
 	}
 
 	public static void registerModels(ModelEvent.RegisterAdditional event) {
@@ -61,6 +78,14 @@ public class PPClientEvents {
 		event.register(PRINT_MODEL_3_EMPTY);
 		event.register(PRINT_MODEL_4_EMPTY);
 		event.register(PRINT_MODEL_5_EMPTY);
+	}
+
+	private static void rotatePP(InputEvent.Key event) {
+		if (event.getAction() == GLFW.GLFW_PRESS && Minecraft.getInstance().player != null) {
+			if (event.getKey() == ROTATE_PP_KEY.getKey().getValue() && ROTATE_PP_KEY.consumeClick()) {
+				PacketDistributor.sendToServer(RotatePPPacket.INSTANCE);
+			}
+		}
 	}
 
 
